@@ -6,7 +6,7 @@
   <title>دعوة زفاف - احمد ورحمه</title>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dom-to-image-more@3.4.1/dist/dom-to-image-more.min.js"></script>
   <style>
     :root {
       --gold: #C8960C;
@@ -14,19 +14,14 @@
       --gold-pale: #FFF3CC;
       --gold-dark: #8B6914;
       --cream: #FFFDF5;
-      --white: #FFFFFF;
       --dark: #2C1A00;
 
-      /* Fluid font sizes */
       --fs-xl:  clamp(36px, 8vw, 60px);
       --fs-lg:  clamp(18px, 4vw, 26px);
       --fs-md:  clamp(14px, 3vw, 20px);
       --fs-sm:  clamp(11px, 2.5vw, 15px);
       --fs-xs:  clamp(10px, 2vw, 13px);
-
-      /* Fluid spacing */
       --pad-h:  clamp(20px, 6vw, 60px);
-      --pad-v:  clamp(14px, 3vw, 30px);
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,9 +29,9 @@
     body {
       min-height: 100vh;
       background:
-        radial-gradient(ellipse at 20% 30%, rgba(200,150,12,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 70%, rgba(200,150,12,0.06) 0%, transparent 60%),
-        linear-gradient(135deg, #0e0500 0%, #1f0d00 40%, #0e0500 100%);
+        radial-gradient(ellipse at 20% 30%, rgba(200,150,12,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 70%, rgba(200,150,12,0.07) 0%, transparent 55%),
+        linear-gradient(135deg, #0a0300 0%, #1c0a00 45%, #0a0300 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -45,7 +40,7 @@
       font-family: 'Tajawal', sans-serif;
     }
 
-    /* ===== CARD ===== */
+    /* ═══ CARD ═══ */
     #card {
       position: relative;
       width: min(700px, 100%);
@@ -54,478 +49,233 @@
       overflow: hidden;
       box-shadow:
         0 0 0 2px var(--gold),
-        0 0 0 clamp(4px, 1.2vw, 10px) rgba(200,150,12,0.12),
-        0 clamp(10px, 4vw, 40px) clamp(30px, 8vw, 90px) rgba(0,0,0,0.75);
+        0 0 0 clamp(4px,1.2vw,10px) rgba(200,150,12,0.14),
+        0 clamp(10px,4vw,40px) clamp(30px,8vw,90px) rgba(0,0,0,0.75);
+      animation: fadeUp .9s cubic-bezier(.22,.61,.36,1) both, glowPulse 4s ease-in-out infinite 1s;
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform .08s ease-out, box-shadow .08s ease-out;
     }
 
-    /* ===== GOLD BARS ===== */
-    .bar {
-      height: clamp(8px, 1.5vw, 14px);
-      background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-light), var(--gold-dark));
+    /* Glow border pulse */
+    @keyframes glowPulse {
+      0%,100% { box-shadow: 0 0 0 2px var(--gold), 0 0 0 8px rgba(200,150,12,0.12), 0 30px 80px rgba(0,0,0,0.7); }
+      50%      { box-shadow: 0 0 0 2px var(--gold-light), 0 0 0 14px rgba(200,150,12,0.22), 0 30px 90px rgba(0,0,0,0.75), 0 0 50px rgba(200,150,12,0.15); }
     }
-    .bar-thin {
-      height: clamp(2px, 0.5vw, 4px);
-      background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-light), var(--gold-dark));
-      margin-top: 2px;
-    }
-
-    /* ===== CORNER ORNAMENTS ===== */
-    .corner {
-      position: absolute;
-      width: clamp(55px, 12vw, 90px);
-      height: clamp(55px, 12vw, 90px);
-      pointer-events: none;
-      z-index: 5;
-    }
-    .corner svg { width: 100%; height: 100%; }
-    .corner.tl { top: clamp(8px, 1.5vw, 14px); left: 0; }
-    .corner.tr { top: clamp(8px, 1.5vw, 14px); right: 0; transform: scaleX(-1); }
-    .corner.bl { bottom: clamp(8px, 1.5vw, 14px); left: 0; transform: scaleY(-1); }
-    .corner.br { bottom: clamp(8px, 1.5vw, 14px); right: 0; transform: scale(-1); }
-
-    /* ===== HEADER ===== */
-    .header {
-      text-align: center;
-      padding: clamp(22px, 5vw, 40px) var(--pad-h) 0;
-      position: relative;
-      z-index: 2;
-    }
-    .bismillah {
-      font-family: 'Amiri', serif;
-      font-size: var(--fs-lg);
-      color: var(--gold);
-      letter-spacing: 2px;
-      margin-bottom: clamp(8px, 2vw, 14px);
-      text-shadow: 0 1px 3px rgba(200,150,12,0.35);
-    }
-    .invite-text {
-      font-size: var(--fs-sm);
-      color: #7a6040;
-      font-weight: 500;
-      letter-spacing: 1px;
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== DIVIDER ===== */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: clamp(6px, 2vw, 12px);
-      margin: clamp(8px, 2vw, 14px) clamp(20px, 7vw, 50px);
-    }
-    .divider-line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    .divider-diamond {
-      width: clamp(6px, 1.5vw, 10px);
-      height: clamp(6px, 1.5vw, 10px);
-      background: var(--gold);
-      transform: rotate(45deg);
-      flex-shrink: 0;
-    }
-
-    /* ===== NAMES ===== */
-    .names-section {
-      text-align: center;
-      padding: clamp(6px, 2vw, 12px) var(--pad-h);
-      position: relative;
-      z-index: 2;
-    }
-    .couple-row {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .name-block { text-align: center; flex: 1; }
-    .role-label {
-      font-size: var(--fs-xs);
-      color: #9a7a40;
-      font-weight: 600;
-      letter-spacing: 1px;
-      margin-bottom: clamp(2px, 0.8vw, 6px);
-      text-transform: uppercase;
-    }
-    .name-arabic {
-      font-family: 'Amiri', serif;
-      font-size: var(--fs-xl);
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-dark));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.1;
-      filter: drop-shadow(0 1px 3px rgba(200,150,12,0.4));
-    }
-    .and-symbol {
-      font-family: 'Amiri', serif;
-      font-size: clamp(28px, 6vw, 50px);
-      color: var(--gold);
-      opacity: 0.65;
-      padding: 0 clamp(4px, 1.5vw, 12px);
-      margin-top: clamp(8px, 2vw, 18px);
-      flex-shrink: 0;
-      line-height: 1;
-    }
-
-    /* ===== SMALL EMOJI ROW ===== */
-    .hearts-row {
-      display: flex;
-      justify-content: center;
-      gap: clamp(8px, 2vw, 14px);
-      font-size: clamp(12px, 3vw, 18px);
-      margin: clamp(2px, 1vw, 6px) 0;
-      z-index: 2;
-      position: relative;
-    }
-
-    /* ===== DATE STAMP ===== */
-    .stamp-wrap {
-      display: flex;
-      justify-content: center;
-      margin: clamp(6px, 1.5vw, 12px) 0 clamp(8px, 2vw, 14px);
-      position: relative;
-      z-index: 2;
-    }
-    .stamp {
-      width: clamp(90px, 18vw, 130px);
-      height: clamp(90px, 18vw, 130px);
-      border-radius: 50%;
-      border: clamp(2px, 0.4vw, 3px) solid var(--gold);
-      background: linear-gradient(135deg, #fff9e6, #fff5cc, #fff9e6);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow:
-        0 0 0 clamp(3px, 1vw, 6px) rgba(200,150,12,0.13),
-        0 0 0 clamp(5px, 1.5vw, 10px) rgba(200,150,12,0.06),
-        0 clamp(4px, 1.5vw, 8px) clamp(14px, 4vw, 30px) rgba(200,150,12,0.3);
-      position: relative;
-    }
-    .stamp::before {
+    /* Islamic geometric tile background */
+    #card::before {
       content: '';
-      position: absolute;
-      inset: clamp(4px, 1vw, 7px);
-      border-radius: 50%;
-      border: 1px dashed var(--gold);
-      opacity: 0.55;
-    }
-    .stamp-date {
-      font-family: 'Amiri', serif;
-      font-size: clamp(18px, 4vw, 28px);
-      font-weight: 700;
-      color: var(--gold-dark);
-      line-height: 1;
-    }
-    .stamp-month {
-      font-size: clamp(9px, 2vw, 13px);
-      color: var(--gold);
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    .stamp-year {
-      font-size: clamp(8px, 1.8vw, 11px);
-      color: #9a7a50;
-      font-weight: 500;
-    }
-
-    /* ===== INFO CARDS ===== */
-    .info-grid {
-      display: flex;
-      gap: clamp(8px, 2vw, 18px);
-      margin: clamp(6px, 2vw, 12px) clamp(16px, 5vw, 50px) 0;
-      position: relative;
-      z-index: 2;
-    }
-    .info-card {
-      flex: 1;
-      background: linear-gradient(135deg, #fff9e6, #fffbf0);
-      border: 1px solid rgba(200,150,12,0.3);
-      border-radius: clamp(8px, 2vw, 14px);
-      padding: clamp(10px, 2.5vw, 20px) clamp(6px, 1.5vw, 14px);
-      text-align: center;
-      box-shadow: 0 3px 16px rgba(200,150,12,0.1);
-    }
-    .info-icon {
-      font-size: clamp(16px, 4vw, 26px);
-      margin-bottom: clamp(3px, 0.8vw, 7px);
-      display: block;
-    }
-    .info-label {
-      font-size: clamp(9px, 2vw, 12px);
-      color: #9a7a40;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      margin-bottom: clamp(2px, 0.5vw, 4px);
-    }
-    .info-value {
-      font-family: 'Amiri', serif;
-      font-size: clamp(14px, 3.5vw, 20px);
-      color: var(--gold-dark);
-      font-weight: 700;
-      line-height: 1.3;
-    }
-    .info-value small {
-      font-size: clamp(9px, 2vw, 13px);
-      color: #7a6040;
-    }
-
-    /* ===== VERSE ===== */
-    .verse-section {
-      text-align: center;
-      margin: clamp(10px, 2.5vw, 18px) var(--pad-h);
-      position: relative;
-      z-index: 2;
-    }
-    .verse-text {
-      font-family: 'Amiri', serif;
-      font-size: clamp(13px, 3.2vw, 18px);
-      color: #6a5030;
-      line-height: 2;
-      font-style: italic;
-    }
-    .verse-source {
-      font-size: var(--fs-xs);
-      color: var(--gold);
-      margin-top: clamp(2px, 0.5vw, 6px);
-      letter-spacing: 1px;
-    }
-
-    /* ===== QR SECTION ===== */
-    .qr-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: clamp(8px, 2vw, 14px) 0 clamp(12px, 3vw, 20px);
-      position: relative;
-      z-index: 2;
-    }
-    .qr-label {
-      font-size: var(--fs-xs);
-      color: #7a6040;
-      margin-bottom: clamp(6px, 1.5vw, 12px);
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-    .qr-frame {
-      background: white;
-      border: clamp(1px, 0.3vw, 2px) solid var(--gold);
-      border-radius: clamp(8px, 2vw, 14px);
-      padding: clamp(7px, 1.5vw, 13px);
-      box-shadow: 0 3px 16px rgba(200,150,12,0.22);
-      position: relative;
-    }
-    .qr-frame::before, .qr-frame::after {
-      content: '';
-      position: absolute;
-      width: clamp(10px, 2.5vw, 18px);
-      height: clamp(10px, 2.5vw, 18px);
-      border-color: var(--gold);
-      border-style: solid;
-    }
-    .qr-frame::before {
-      top: -3px; left: -3px;
-      border-width: 3px 0 0 3px;
-      border-radius: 4px 0 0 0;
-    }
-    .qr-frame::after {
-      bottom: -3px; right: -3px;
-      border-width: 0 3px 3px 0;
-      border-radius: 0 0 4px 0;
-    }
-    #qr-code canvas, #qr-code img { border-radius: 5px; display: block; }
-    .qr-hint {
-      font-size: clamp(9px, 2vw, 11px);
-      color: #9a7a50;
-      margin-top: clamp(4px, 1vw, 8px);
-      text-align: center;
-    }
-
-    /* ===== FOOTER ===== */
-    .footer-msg {
-      text-align: center;
-      padding: clamp(6px, 1.5vw, 12px) var(--pad-h) clamp(14px, 3vw, 22px);
-      font-family: 'Amiri', serif;
-      font-size: clamp(14px, 3.5vw, 19px);
-      color: var(--gold-dark);
-      font-weight: 700;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* ===== PARTICLES ===== */
-    .particles {
       position: absolute;
       inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30Z' fill='none' stroke='%23C8960C' stroke-width='0.3' opacity='0.12'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%23C8960C' stroke-width='0.3' opacity='0.1'/%3E%3Cpath d='M0 0 L15 15 M60 0 L45 15 M0 60 L15 45 M60 60 L45 45' stroke='%23C8960C' stroke-width='0.3' opacity='0.1'/%3E%3C/svg%3E");
+      background-size: 60px 60px;
       pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
-    }
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,150,12,0.3), transparent);
-      animation: float linear infinite;
-    }
-    .petal {
-      position: absolute;
-      animation: petal-fall linear infinite;
-      pointer-events: none;
-      z-index: 1;
-    }
-    @keyframes float {
-      0%   { transform: translateY(0) rotate(0deg);   opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 0.7; }
-      100% { transform: translateY(-110%) rotate(360deg); opacity: 0; }
-    }
-    @keyframes petal-fall {
-      0%   { transform: translateY(-20px) rotate(0deg);   opacity: 0; }
-      10%  { opacity: 0.7; }
-      90%  { opacity: 0.5; }
-      100% { transform: translateY(1000px) rotate(720deg); opacity: 0; }
+      z-index: 0;
     }
 
-    /* ===== SHIMMER on names ===== */
-    @keyframes shimmer {
-      0%   { background-position: -200% center; }
-      100% { background-position:  200% center; }
-    }
+    /* ═══ GOLD BARS ═══ */
+    .bar     { height: clamp(8px,1.5vw,14px); background: linear-gradient(90deg,var(--gold-dark),var(--gold-light),var(--gold),var(--gold-light),var(--gold-dark)); position:relative; z-index:2; }
+    .bar-thin{ height: clamp(2px,.5vw,4px);   background: linear-gradient(90deg,var(--gold-dark),var(--gold-light),var(--gold),var(--gold-light),var(--gold-dark)); margin-top:2px; position:relative; z-index:2; }
+
+    /* ═══ CORNERS ═══ */
+    .corner { position:absolute; width:clamp(55px,12vw,90px); height:clamp(55px,12vw,90px); pointer-events:none; z-index:5; }
+    .corner svg { width:100%; height:100%; }
+    .corner.tl { top:clamp(8px,1.5vw,14px); left:0; }
+    .corner.tr { top:clamp(8px,1.5vw,14px); right:0; transform:scaleX(-1); }
+    .corner.bl { bottom:clamp(8px,1.5vw,14px); left:0; transform:scaleY(-1); }
+    .corner.br { bottom:clamp(8px,1.5vw,14px); right:0; transform:scale(-1); }
+
+    /* ═══ SECTION REVEAL ═══ */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ═══ HEADER ═══ */
+    .header { text-align:center; padding:clamp(22px,5vw,40px) var(--pad-h) 0; position:relative; z-index:2; }
+    .bismillah { font-family:'Amiri',serif; font-size:var(--fs-lg); color:var(--gold); letter-spacing:2px; margin-bottom:clamp(8px,2vw,14px); text-shadow:0 1px 4px rgba(200,150,12,.4); }
+    .invite-text { font-size:var(--fs-sm); color:#7a6040; font-weight:500; letter-spacing:.5px; }
+
+    /* ═══ DIVIDER ═══ */
+    .divider { display:flex; align-items:center; gap:clamp(6px,2vw,12px); margin:clamp(8px,2vw,14px) clamp(20px,7vw,50px); position:relative; z-index:2; }
+    .divider-line    { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+    .divider-diamond { width:clamp(5px,1.4vw,9px); height:clamp(5px,1.4vw,9px); background:var(--gold); transform:rotate(45deg); flex-shrink:0; }
+
+    /* ═══ NAMES ═══ */
+    .names-section { text-align:center; padding:clamp(6px,2vw,12px) var(--pad-h); position:relative; z-index:2; }
+    .couple-row { display:flex; justify-content:center; align-items:center; }
+    .name-block { text-align:center; flex:1; }
+    .role-label { font-size:var(--fs-xs); color:#9a7a40; font-weight:600; letter-spacing:1px; margin-bottom:clamp(2px,.8vw,6px); }
     .name-arabic {
+      font-family:'Amiri',serif;
+      font-size:var(--fs-xl);
+      font-weight:700;
+      background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-light) 40%, #ffe680 55%, var(--gold) 70%, var(--gold-dark) 100%);
       background-size: 200% auto;
-      animation: shimmer 4s linear infinite;
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      line-height:1.1;
+      filter:drop-shadow(0 1px 3px rgba(200,150,12,.4));
+      animation: shimmer 3.5s linear infinite;
     }
+    @keyframes shimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
+    .and-symbol { font-family:'Amiri',serif; font-size:clamp(28px,6vw,50px); color:var(--gold); opacity:.6; padding:0 clamp(4px,1.5vw,12px); margin-top:clamp(8px,2vw,18px); flex-shrink:0; line-height:1; }
 
-    /* ===== PULSE on stamp ===== */
-    @keyframes pulse-ring {
-      0%   { box-shadow: 0 0 0 0 rgba(200,150,12,0.35), 0 0 0 6px rgba(200,150,12,0.1); }
-      100% { box-shadow: 0 0 0 12px rgba(200,150,12,0),  0 0 0 6px rgba(200,150,12,0); }
+    .hearts-row { display:flex; justify-content:center; gap:clamp(8px,2vw,14px); font-size:clamp(12px,3vw,18px); margin:clamp(2px,1vw,6px) 0; z-index:2; position:relative; }
+
+    /* ═══ STAMP ═══ */
+    .stamp-wrap { display:flex; justify-content:center; margin:clamp(6px,1.5vw,12px) 0 clamp(8px,2vw,14px); position:relative; z-index:2; }
+    .stamp {
+      width:clamp(90px,18vw,130px); height:clamp(90px,18vw,130px); border-radius:50%;
+      border:clamp(2px,.4vw,3px) solid var(--gold);
+      background:linear-gradient(135deg,#fff9e6,#fff5cc,#fff9e6);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      position:relative;
+      animation: stampPulse 2.8s ease-out infinite;
     }
-    .stamp { animation: pulse-ring 2.5s ease-out infinite; }
-
-    /* ===== WATERMARK ===== */
-    .watermark {
-      position: absolute;
-      bottom: clamp(20px, 4vw, 32px);
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: clamp(8px, 1.8vw, 10px);
-      color: rgba(200,150,12,0.3);
-      letter-spacing: 2px;
-      z-index: 3;
-      white-space: nowrap;
+    @keyframes stampPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(200,150,12,.4), 0 0 0 6px rgba(200,150,12,.1); }
+      70%  { box-shadow: 0 0 0 12px rgba(200,150,12,0), 0 0 0 6px rgba(200,150,12,0); }
+      100% { box-shadow: 0 0 0 0 rgba(200,150,12,0), 0 0 0 6px rgba(200,150,12,0); }
     }
+    .stamp::before { content:''; position:absolute; inset:clamp(4px,1vw,7px); border-radius:50%; border:1px dashed var(--gold); opacity:.5; }
+    .stamp-date  { font-family:'Amiri',serif; font-size:clamp(18px,4vw,28px); font-weight:700; color:var(--gold-dark); line-height:1; }
+    .stamp-month { font-size:clamp(9px,2vw,13px); color:var(--gold); font-weight:700; letter-spacing:1px; }
+    .stamp-year  { font-size:clamp(8px,1.8vw,11px); color:#9a7a50; font-weight:500; }
 
-    /* ===== DOWNLOAD BTN ===== */
+    /* ═══ INFO CARDS ═══ */
+    .info-grid { display:flex; gap:clamp(8px,2vw,18px); margin:clamp(6px,2vw,12px) clamp(16px,5vw,50px) 0; position:relative; z-index:2; }
+    .info-card {
+      flex:1; background:linear-gradient(135deg,#fff9e6,#fffbf0);
+      border:1px solid rgba(200,150,12,.25); border-radius:clamp(8px,2vw,14px);
+      padding:clamp(10px,2.5vw,20px) clamp(6px,1.5vw,14px); text-align:center;
+      box-shadow:0 3px 14px rgba(200,150,12,.09);
+      transition: transform .25s ease, box-shadow .25s ease;
+      cursor:default;
+    }
+    .info-card:hover { transform:translateY(-4px) scale(1.02); box-shadow:0 10px 30px rgba(200,150,12,.25); }
+    .info-icon  { font-size:clamp(16px,4vw,26px); margin-bottom:clamp(3px,.8vw,7px); display:block; }
+    .info-label { font-size:clamp(9px,2vw,12px); color:#9a7a40; font-weight:600; letter-spacing:.5px; margin-bottom:clamp(2px,.5vw,4px); }
+    .info-value { font-family:'Amiri',serif; font-size:clamp(14px,3.5vw,20px); color:var(--gold-dark); font-weight:700; line-height:1.3; }
+    .info-value small { font-size:clamp(9px,2vw,13px); color:#7a6040; }
+
+    /* ═══ VERSE ═══ */
+    .verse-section { text-align:center; margin:clamp(10px,2.5vw,18px) var(--pad-h); position:relative; z-index:2; }
+    .verse-text { font-family:'Amiri',serif; font-size:clamp(13px,3.2vw,18px); color:#6a5030; line-height:2; font-style:italic; }
+    .verse-source { font-size:var(--fs-xs); color:var(--gold); margin-top:clamp(2px,.5vw,6px); letter-spacing:1px; }
+
+    /* ═══ COUNTDOWN (screen-only) ═══ */
+    #countdown-wrap {
+      display:flex; justify-content:center; gap:clamp(10px,3vw,20px);
+      margin:clamp(4px,1.5vw,10px) 0 clamp(8px,2vw,12px);
+      position:relative; z-index:2;
+    }
+    .cd-box {
+      background:linear-gradient(135deg,var(--gold-dark),var(--gold)); color:#fff8e0;
+      border-radius:clamp(6px,1.5vw,10px); padding:clamp(6px,1.5vw,10px) clamp(10px,2.5vw,18px);
+      text-align:center; min-width:clamp(50px,12vw,72px);
+      box-shadow:0 4px 16px rgba(200,150,12,.35);
+    }
+    .cd-num  { font-family:'Amiri',serif; font-size:clamp(20px,5vw,34px); font-weight:700; line-height:1; }
+    .cd-lbl  { font-size:clamp(9px,2vw,11px); opacity:.85; letter-spacing:.5px; margin-top:2px; }
+    .cd-title { text-align:center; font-size:var(--fs-xs); color:#9a7a40; margin-bottom:clamp(4px,1vw,8px); font-weight:600; letter-spacing:1px; position:relative; z-index:2; }
+
+    /* ═══ QR ═══ */
+    .qr-section { display:flex; flex-direction:column; align-items:center; margin:clamp(8px,2vw,14px) 0 clamp(12px,3vw,20px); position:relative; z-index:2; }
+    .qr-label { font-size:var(--fs-xs); color:#7a6040; margin-bottom:clamp(6px,1.5vw,12px); font-weight:600; letter-spacing:.5px; }
+    .qr-frame {
+      background:white; border:clamp(1px,.3vw,2px) solid var(--gold); border-radius:clamp(8px,2vw,14px);
+      padding:clamp(7px,1.5vw,13px); box-shadow:0 3px 16px rgba(200,150,12,.22); position:relative;
+      transition: box-shadow .3s ease;
+    }
+    .qr-frame:hover { box-shadow:0 6px 28px rgba(200,150,12,.5); }
+    .qr-frame::before,.qr-frame::after { content:''; position:absolute; width:clamp(10px,2.5vw,18px); height:clamp(10px,2.5vw,18px); border-color:var(--gold); border-style:solid; }
+    .qr-frame::before { top:-3px; left:-3px; border-width:3px 0 0 3px; border-radius:4px 0 0 0; }
+    .qr-frame::after  { bottom:-3px; right:-3px; border-width:0 3px 3px 0; border-radius:0 0 4px 0; }
+    #qr-code canvas, #qr-code img { border-radius:5px; display:block; }
+    .qr-hint { font-size:clamp(9px,2vw,11px); color:#9a7a50; margin-top:clamp(4px,1vw,8px); text-align:center; }
+
+    /* ═══ FOOTER ═══ */
+    .footer-msg { text-align:center; padding:clamp(6px,1.5vw,12px) var(--pad-h) clamp(14px,3vw,22px); font-family:'Amiri',serif; font-size:clamp(14px,3.5vw,19px); color:var(--gold-dark); font-weight:700; position:relative; z-index:2; }
+    .watermark  { position:absolute; bottom:clamp(20px,4vw,32px); left:50%; transform:translateX(-50%); font-size:clamp(8px,1.8vw,10px); color:rgba(200,150,12,.28); letter-spacing:2px; z-index:3; white-space:nowrap; }
+
+    /* ═══ PARTICLES ═══ */
+    .particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:1; }
+    .particle { position:absolute; border-radius:50%; background:radial-gradient(circle,rgba(200,150,12,.28),transparent); animation:floatUp linear infinite; }
+    .petal    { position:absolute; animation:petalFall linear infinite; pointer-events:none; }
+    @keyframes floatUp  { 0%{transform:translateY(0) rotate(0deg);opacity:0} 10%{opacity:1} 90%{opacity:.7} 100%{transform:translateY(-110%) rotate(360deg);opacity:0} }
+    @keyframes petalFall{ 0%{transform:translateY(-30px) rotate(0);opacity:0} 10%{opacity:.7} 90%{opacity:.5} 100%{transform:translateY(1100px) rotate(720deg);opacity:0} }
+
+    /* ═══ SPARKLE CANVAS (screen-only) ═══ */
+    #sparkle-canvas { position:fixed; inset:0; pointer-events:none; z-index:9999; }
+
+    /* ═══ DOWNLOAD BTN ═══ */
     #download-btn {
-      margin-top: clamp(18px, 4vw, 30px);
-      padding: clamp(10px, 2.5vw, 15px) clamp(28px, 7vw, 52px);
-      font-family: 'Tajawal', sans-serif;
-      font-size: clamp(14px, 3.5vw, 17px);
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold));
-      color: #1a0a00;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 6px 28px rgba(200,150,12,0.5);
-      transition: transform 0.2s, box-shadow 0.2s;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      margin-top:clamp(18px,4vw,30px);
+      padding:clamp(10px,2.5vw,15px) clamp(28px,7vw,52px);
+      font-family:'Tajawal',sans-serif; font-size:clamp(14px,3.5vw,17px); font-weight:700;
+      background:linear-gradient(135deg,var(--gold-dark),var(--gold-light),var(--gold));
+      color:#1a0a00; border:none; border-radius:50px; cursor:pointer;
+      box-shadow:0 6px 28px rgba(200,150,12,.5);
+      transition:transform .2s, box-shadow .2s;
+      display:flex; align-items:center; gap:8px;
     }
-    #download-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 40px rgba(200,150,12,0.7);
-    }
-    #download-btn:active { transform: translateY(0); }
-    #download-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-    .btn-loading { display: none; }
+    #download-btn:hover { transform:translateY(-3px); box-shadow:0 10px 40px rgba(200,150,12,.7); }
+    #download-btn:active { transform:translateY(0); }
+    #download-btn:disabled { opacity:.7; cursor:not-allowed; }
+    .btn-loading { display:none; }
 
-    /* ===== RESPONSIVE TWEAKS ===== */
-    @media (max-width: 420px) {
-      .couple-row { gap: 0; }
-      .info-grid { gap: 6px; margin-inline: 10px; }
-      .verse-text { line-height: 1.8; }
-    }
+    /* ═══ EXPORT STATE ═══ */
+    /* When exporting, hide screen-only elements & freeze all animations */
+    .exporting .screen-only   { display:none !important; }
+    .exporting *              { animation:none !important; transition:none !important; }
+    .exporting                { animation:none !important; box-shadow:0 0 0 2px var(--gold), 0 20px 60px rgba(0,0,0,.7) !important; }
+    .exporting .name-arabic   { background-position: 0 center !important; }
+    .exporting .particles     { visibility:hidden !important; }
 
-    /* Smooth fade-in on load */
-    #card { animation: fadeUp 0.8s ease both; }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
+    @media (max-width:420px) {
+      .couple-row { gap:0; }
+      .info-grid  { gap:6px; margin-inline:10px; }
+      .verse-text { line-height:1.8; }
     }
   </style>
 </head>
 <body>
 
+<!-- Sparkle canvas (screen-only) -->
+<canvas id="sparkle-canvas" class="screen-only"></canvas>
+
 <div id="card">
 
-  <!-- Gold bars top -->
   <div class="bar"></div>
   <div class="bar-thin"></div>
 
-  <!-- Corner ornaments -->
-  <div class="corner tl">
-    <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/>
-      <path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/>
-      <circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/>
-      <circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/>
-      <path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
-      <path d="M30 5 Q25 15 35 20 Q25 25 30 35" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
-    </svg>
-  </div>
-  <div class="corner tr">
-    <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/>
-      <path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/>
-      <circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/>
-      <circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/>
-      <path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
-      <path d="M30 5 Q25 15 35 20 Q25 25 30 35" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
-    </svg>
-  </div>
-  <div class="corner bl">
-    <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/>
-      <path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/>
-      <circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/>
-      <circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/>
-      <path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
-    </svg>
-  </div>
-  <div class="corner br">
-    <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/>
-      <path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/>
-      <circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/>
-      <circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/>
-      <path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
-    </svg>
-  </div>
+  <!-- Corners -->
+  <div class="corner tl"><svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/><path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/><circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/><circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/><path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/><path d="M30 5 Q25 15 35 20 Q25 25 30 35" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/></svg></div>
+  <div class="corner tr"><svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/><path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/><circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/><circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/><path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/><path d="M30 5 Q25 15 35 20 Q25 25 30 35" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/></svg></div>
+  <div class="corner bl"><svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/><path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/><circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/><circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/></svg></div>
+  <div class="corner br"><svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/><path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/><circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/><circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/></svg></div>
 
-  <!-- Particles container -->
   <div class="particles" id="particles"></div>
 
   <!-- HEADER -->
-  <div class="header">
-    <div class="bismillah">﷽</div>
+  <div class="header reveal">
+    <div class="bismillah">بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ</div>
     <div class="invite-text">يسعدنا دعوتكم لحضور حفل زفاف</div>
   </div>
 
-  <div class="divider">
+  <div class="divider reveal">
     <div class="divider-line"></div>
     <div class="divider-diamond"></div>
-    <div class="divider-diamond" style="opacity:.5; margin-inline: -6px;"></div>
+    <div class="divider-diamond" style="opacity:.4;margin-inline:-4px;"></div>
     <div class="divider-diamond"></div>
     <div class="divider-line"></div>
   </div>
 
   <!-- NAMES -->
-  <div class="names-section">
+  <div class="names-section reveal">
     <div class="couple-row">
       <div class="name-block">
         <div class="role-label">العريس</div>
@@ -539,29 +289,34 @@
     </div>
   </div>
 
-  <div class="hearts-row">
-    <span style="color:var(--gold); opacity:.5;">✦</span>
-    <span style="color:var(--gold); font-size:1.4em;">♥</span>
-    <span style="color:var(--gold); opacity:.5;">✦</span>
+  <div class="hearts-row reveal">
+    <span style="color:var(--gold);opacity:.45;">✦</span>
+    <span style="color:var(--gold);font-size:1.4em;">♥</span>
+    <span style="color:var(--gold);opacity:.45;">✦</span>
   </div>
 
-  <div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-diamond"></div>
-    <div class="divider-line"></div>
-  </div>
+  <div class="divider reveal"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
 
   <!-- DATE STAMP -->
-  <div class="stamp-wrap">
+  <div class="stamp-wrap reveal">
     <div class="stamp">
       <div class="stamp-date">٣١</div>
       <div class="stamp-month">مارس</div>
-      <div class="stamp-year">٢٠٢٥</div>
+      <div class="stamp-year">٢٠٢٦</div>
     </div>
   </div>
 
+  <!-- COUNTDOWN (screen-only) -->
+  <div class="cd-title screen-only reveal">⏳ الوقت المتبقي على الفرح</div>
+  <div id="countdown-wrap" class="screen-only reveal">
+    <div class="cd-box"><div class="cd-num" id="cd-days">٠</div><div class="cd-lbl">يوم</div></div>
+    <div class="cd-box"><div class="cd-num" id="cd-hours">٠</div><div class="cd-lbl">ساعة</div></div>
+    <div class="cd-box"><div class="cd-num" id="cd-mins">٠</div><div class="cd-lbl">دقيقة</div></div>
+    <div class="cd-box"><div class="cd-num" id="cd-secs">٠</div><div class="cd-lbl">ثانية</div></div>
+  </div>
+
   <!-- INFO CARDS -->
-  <div class="info-grid">
+  <div class="info-grid reveal">
     <div class="info-card">
       <span class="info-icon">🕕</span>
       <div class="info-label">الموعد</div>
@@ -577,32 +332,24 @@
     <div class="info-card">
       <span class="info-icon">🗺️</span>
       <div class="info-label">المكان</div>
-      <div class="info-value" style="font-size: clamp(11px,2.5vw,14px);">قرية تاج الملوك</div>
+      <div class="info-value" style="font-size:clamp(11px,2.5vw,14px);">قرية تاج الملوك</div>
       <div class="info-value"><small>امسح الكود ↓</small></div>
     </div>
   </div>
 
   <!-- VERSE -->
-  <div class="verse-section">
-    <div class="divider" style="margin: clamp(10px,2.5vw,16px) 0;">
-      <div class="divider-line"></div>
-      <div class="divider-diamond"></div>
-      <div class="divider-line"></div>
-    </div>
+  <div class="verse-section reveal">
+    <div class="divider" style="margin:clamp(10px,2.5vw,16px) 0"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
     <div class="verse-text">
       وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا<br/>
       لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً
     </div>
     <div class="verse-source">— سورة الروم: ٢١ —</div>
-    <div class="divider" style="margin: clamp(10px,2.5vw,14px) 0;">
-      <div class="divider-line"></div>
-      <div class="divider-diamond"></div>
-      <div class="divider-line"></div>
-    </div>
+    <div class="divider" style="margin:clamp(10px,2.5vw,14px) 0"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
   </div>
 
   <!-- QR CODE -->
-  <div class="qr-section">
+  <div class="qr-section reveal">
     <div class="qr-label">📍 الموقع على الخريطة — قرية تاج الملوك</div>
     <div class="qr-frame">
       <div id="qr-code"></div>
@@ -611,13 +358,12 @@
   </div>
 
   <!-- FOOTER -->
-  <div class="footer-msg">ألف مبروك .. ودوام المحبة والسعادة 💛</div>
+  <div class="footer-msg reveal">ألف مبروك .. ودوام المحبة والسعادة 💛</div>
 
-  <!-- Gold bars bottom -->
   <div class="bar-thin" style="margin-bottom:2px;"></div>
   <div class="bar"></div>
 
-  <div class="watermark">احمد &amp; رحمه — ٣١/٣/٢٠٢٥</div>
+  <div class="watermark">احمد &amp; رحمه — ٣١ / ٣ / ٢٠٢٦</div>
 </div>
 
 <!-- DOWNLOAD BUTTON -->
@@ -627,93 +373,184 @@
 </button>
 
 <script>
-  /* ====== QR CODE ====== */
-  const LOCATION_URL = "https://www.google.com/maps?q=30.3856545,30.9869";
+/* ══════════════════════════════════════
+   QR CODE
+══════════════════════════════════════ */
+const LOCATION_URL = "https://www.google.com/maps?q=30.3856545,30.9869";
+const qrSize = Math.min(140, Math.round(window.innerWidth * 0.32));
+new QRCode(document.getElementById("qr-code"), {
+  text: LOCATION_URL, width: qrSize, height: qrSize,
+  colorDark: "#2C1A00", colorLight: "#FFFFFF",
+  correctLevel: QRCode.CorrectLevel.H
+});
 
-  // Responsive QR size
-  const qrSize = Math.min(140, Math.round(window.innerWidth * 0.32));
-
-  new QRCode(document.getElementById("qr-code"), {
-    text: LOCATION_URL,
-    width: qrSize,
-    height: qrSize,
-    colorDark: "#2C1A00",
-    colorLight: "#FFFFFF",
-    correctLevel: QRCode.CorrectLevel.H
-  });
-
-  /* ====== PARTICLES ====== */
-  const particlesEl = document.getElementById('particles');
-
-  // Glowing orbs
-  for (let i = 0; i < 16; i++) {
-    const p = document.createElement('div');
-    p.classList.add('particle');
-    const size = Math.random() * 14 + 5;
-    p.style.cssText = `
-      width:${size}px;height:${size}px;
-      left:${Math.random()*100}%;
-      bottom:-20px;
-      animation-duration:${Math.random()*10+8}s;
-      animation-delay:${Math.random()*8}s;
-      opacity:0;
-    `;
-    particlesEl.appendChild(p);
-  }
-
-  // Falling petals
-  const petalEmojis = ['🌸','✨','⭐','💛','🌟','✦','❋'];
-  for (let i = 0; i < 10; i++) {
-    const p = document.createElement('div');
-    p.classList.add('petal');
-    p.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
-    p.style.cssText = `
-      left:${Math.random()*100}%;
-      top:-30px;
-      animation-duration:${Math.random()*12+10}s;
-      animation-delay:${Math.random()*10}s;
-      font-size:${Math.random()*8+9}px;
-      opacity:0;
-    `;
-    particlesEl.appendChild(p);
-  }
-
-  /* ====== DOWNLOAD AS IMAGE ====== */
-  async function downloadCard() {
-    const btn       = document.getElementById('download-btn');
-    const btnText   = btn.querySelector('.btn-text');
-    const btnLoading = document.getElementById('btn-loading');
-
-    btnText.style.display   = 'none';
-    btnLoading.style.display = 'inline';
-    btn.disabled = true;
-
-    try {
-      const card = document.getElementById('card');
-      const canvas = await html2canvas(card, {
-        scale: 3,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#FFFDF5',
-        logging: false,
-        width:  card.offsetWidth,
-        height: card.offsetHeight,
-      });
-
-      const link = document.createElement('a');
-      link.download = 'كارت-زفاف-احمد-ورحمه.png';
-      link.href = canvas.toDataURL('image/png', 1.0);
-      link.click();
-    } catch (err) {
-      alert('حدث خطأ أثناء التحميل، حاول مرة أخرى');
-      console.error(err);
-    } finally {
-      btnText.style.display   = 'inline';
-      btnLoading.style.display = 'none';
-      btn.disabled = false;
+/* ══════════════════════════════════════
+   STAGGERED REVEAL (Intersection Observer)
+══════════════════════════════════════ */
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 90);
+      io.unobserve(e.target);
     }
-  }
-</script>
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => io.observe(el));
 
+/* ══════════════════════════════════════
+   PARTICLES
+══════════════════════════════════════ */
+const particlesEl = document.getElementById('particles');
+for (let i = 0; i < 14; i++) {
+  const p = document.createElement('div');
+  p.classList.add('particle');
+  const size = Math.random() * 12 + 5;
+  p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;bottom:-20px;animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*8}s;opacity:0;`;
+  particlesEl.appendChild(p);
+}
+const petalEmojis = ['🌸','✨','⭐','💛','🌟','✦','❋'];
+for (let i = 0; i < 10; i++) {
+  const p = document.createElement('div');
+  p.classList.add('petal');
+  p.textContent = petalEmojis[Math.floor(Math.random()*petalEmojis.length)];
+  p.style.cssText = `left:${Math.random()*100}%;top:-30px;animation-duration:${Math.random()*12+10}s;animation-delay:${Math.random()*10}s;font-size:${Math.random()*8+9}px;opacity:0;`;
+  particlesEl.appendChild(p);
+}
+
+/* ══════════════════════════════════════
+   COUNTDOWN TIMER
+══════════════════════════════════════ */
+function toAr(n) {
+  return String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+}
+function updateCountdown() {
+  const target = new Date('2026-03-31T18:00:00');
+  const now    = new Date();
+  const diff   = target - now;
+  if (diff <= 0) {
+    document.getElementById('countdown-wrap').innerHTML =
+      '<div style="font-family:Amiri,serif;font-size:clamp(16px,4vw,22px);color:var(--gold-dark);font-weight:700;">🎉 مبروك! يوم الفرح اتبدأ</div>';
+    return;
+  }
+  const days  = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins  = Math.floor((diff % 3600000)  / 60000);
+  const secs  = Math.floor((diff % 60000)    / 1000);
+  document.getElementById('cd-days' ).textContent = toAr(days);
+  document.getElementById('cd-hours').textContent = toAr(hours);
+  document.getElementById('cd-mins' ).textContent = toAr(mins);
+  document.getElementById('cd-secs' ).textContent = toAr(secs);
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* ══════════════════════════════════════
+   3D TILT ON MOUSE MOVE (screen-only)
+══════════════════════════════════════ */
+const card = document.getElementById('card');
+card.addEventListener('mousemove', e => {
+  const r = card.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width  - 0.5;
+  const y = (e.clientY - r.top)  / r.height - 0.5;
+  card.style.transform = `perspective(900px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) scale(1.01)`;
+});
+card.addEventListener('mouseleave', () => {
+  card.style.transform = '';
+});
+
+/* ══════════════════════════════════════
+   SPARKLE CURSOR (screen-only)
+══════════════════════════════════════ */
+const sc = document.getElementById('sparkle-canvas');
+const ctx = sc.getContext('2d');
+sc.width  = window.innerWidth;
+sc.height = window.innerHeight;
+window.addEventListener('resize', () => { sc.width = window.innerWidth; sc.height = window.innerHeight; });
+
+let sparks = [];
+document.addEventListener('mousemove', e => {
+  for (let i = 0; i < 3; i++) {
+    sparks.push({
+      x: e.clientX, y: e.clientY,
+      vx: (Math.random() - .5) * 3, vy: (Math.random() - 1.5) * 3,
+      life: 1, size: Math.random() * 5 + 2,
+      color: ['#F0C040','#C8960C','#FFF3CC','#FFE680'][Math.floor(Math.random()*4)]
+    });
+  }
+});
+function animateSparks() {
+  ctx.clearRect(0, 0, sc.width, sc.height);
+  sparks = sparks.filter(s => s.life > 0);
+  sparks.forEach(s => {
+    s.x += s.vx; s.y += s.vy; s.life -= .035; s.vy += .08;
+    ctx.globalAlpha = s.life;
+    ctx.fillStyle   = s.color;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animateSparks);
+}
+animateSparks();
+
+/* ══════════════════════════════════════
+   DOWNLOAD AS IMAGE
+   All screen-only effects frozen safely
+══════════════════════════════════════ */
+async function downloadCard() {
+  const btn        = document.getElementById('download-btn');
+  const btnText    = btn.querySelector('.btn-text');
+  const btnLoading = document.getElementById('btn-loading');
+
+  btnText.style.display    = 'none';
+  btnLoading.style.display = 'inline';
+  btn.disabled = true;
+
+  try {
+    // 1. Wait for all fonts to load
+    await document.fonts.ready;
+
+    // 2. Apply export state: hides screen-only, freezes animations
+    card.classList.add('exporting');
+    // Also freeze tilt
+    card.style.transform = '';
+
+    // Small settle time for CSS to apply before capture
+    await new Promise(r => setTimeout(r, 120));
+
+    // 3. Capture with dom-to-image-more at 3x for retina quality
+    const dataUrl = await domtoimage.toPng(card, {
+      bgcolor : '#FFFDF5',
+      quality : 1,
+      width   : card.offsetWidth  * 3,
+      height  : card.offsetHeight * 3,
+      style   : {
+        transform       : 'scale(3)',
+        transformOrigin : 'top left',
+        width           : card.offsetWidth  + 'px',
+        height          : card.offsetHeight + 'px',
+      },
+    });
+
+    // 4. Download
+    const link = document.createElement('a');
+    link.download = 'كارت-زفاف-احمد-ورحمه.png';
+    link.href = dataUrl;
+    link.click();
+
+  } catch (err) {
+    alert('حدث خطأ أثناء التحميل، حاول مرة أخرى');
+    console.error(err);
+  } finally {
+    // 5. Restore everything
+    card.classList.remove('exporting');
+    btnText.style.display    = 'inline';
+    btnLoading.style.display = 'none';
+    btn.disabled = false;
+  }
+}
+</script>
 </body>
 </html>
