@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>دعوة زفاف - احمد ورحمه</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --gold: #C8960C;
+      --gold-light: #F0C040;
+      --gold-pale: #FFF3CC;
+      --gold-dark: #8B6914;
+      --cream: #FFFDF5;
+      --white: #FFFFFF;
+      --dark: #2C1A00;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a0a00 0%, #2d1500 40%, #1a0a00 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    /* ===== CANVAS / CARD ===== */
+    #card {
+      position: relative;
+      width: 700px;
+      min-height: 950px;
+      background: var(--cream);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 2px var(--gold),
+        0 0 0 8px rgba(200,150,12,0.15),
+        0 30px 80px rgba(0,0,0,0.7);
+    }
+
+    /* ===== GOLD BARS TOP/BOTTOM ===== */
+    .bar {
+      height: 14px;
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-light), var(--gold-dark));
+    }
+
+    /* ===== CORNER ORNAMENTS ===== */
+    .corner {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .corner svg { width: 100%; height: 100%; }
+    .corner.tl { top: 14px; left: 0; }
+    .corner.tr { top: 14px; right: 0; transform: scaleX(-1); }
+    .corner.bl { bottom: 14px; left: 0; transform: scaleY(-1); }
+    .corner.br { bottom: 14px; right: 0; transform: scale(-1); }
+
+    /* ===== HEADER ===== */
+    .header {
+      text-align: center;
+      padding: 38px 60px 0;
+      position: relative;
+      z-index: 2;
+    }
+    .bismillah {
+      font-family: 'Amiri', serif;
+      font-size: 22px;
+      color: var(--gold);
+      letter-spacing: 3px;
+      margin-bottom: 14px;
+      text-shadow: 0 1px 2px rgba(200,150,12,0.3);
+    }
+    .invite-text {
+      font-size: 15px;
+      color: #7a6040;
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    /* ===== GOLD DIVIDER ===== */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 50px;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .divider-diamond {
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ===== NAMES SECTION ===== */
+    .names-section {
+      text-align: center;
+      padding: 10px 40px;
+      position: relative;
+      z-index: 2;
+    }
+    .couple-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .name-block {
+      text-align: center;
+      flex: 1;
+      min-width: 180px;
+    }
+    .role-label {
+      font-size: 13px;
+      color: #9a7a40;
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .name-arabic {
+      font-family: 'Amiri', serif;
+      font-size: 58px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      text-shadow: none;
+      filter: drop-shadow(0 2px 4px rgba(200,150,12,0.4));
+    }
+    .and-symbol {
+      font-family: 'Amiri', serif;
+      font-size: 50px;
+      color: var(--gold);
+      opacity: 0.7;
+      padding: 0 10px;
+      line-height: 1;
+      margin-top: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ===== GOLDEN STAMP CIRCLE ===== */
+    .stamp-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 6px 0 10px;
+      position: relative;
+      z-index: 2;
+    }
+    .stamp {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 3px solid var(--gold);
+      background: linear-gradient(135deg, #fff9e6, #fff5cc, #fff9e6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 0 6px rgba(200,150,12,0.12),
+        0 0 0 10px rgba(200,150,12,0.06),
+        0 8px 30px rgba(200,150,12,0.3);
+      position: relative;
+    }
+    .stamp::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 1px dashed var(--gold);
+      opacity: 0.6;
+    }
+    .stamp-date {
+      font-family: 'Amiri', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--gold-dark);
+      line-height: 1;
+    }
+    .stamp-month {
+      font-size: 13px;
+      color: var(--gold);
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+    .stamp-year {
+      font-size: 11px;
+      color: #9a7a50;
+      font-weight: 500;
+    }
+
+    /* ===== INFO CARDS ===== */
+    .info-grid {
+      display: flex;
+      gap: 18px;
+      margin: 10px 50px 0;
+      position: relative;
+      z-index: 2;
+    }
+    .info-card {
+      flex: 1;
+      background: linear-gradient(135deg, #fff9e6, #fffbf0);
+      border: 1px solid rgba(200,150,12,0.3);
+      border-radius: 12px;
+      padding: 18px 14px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(200,150,12,0.1);
+    }
+    .info-icon {
+      font-size: 26px;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .info-label {
+      font-size: 12px;
+      color: #9a7a40;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .info-value {
+      font-family: 'Amiri', serif;
+      font-size: 20px;
+      color: var(--gold-dark);
+      font-weight: 700;
+    }
+    .info-value small {
+      font-size: 13px;
+      color: #7a6040;
+    }
+
+    /* ===== POEM / VERSE ===== */
+    .verse-section {
+      text-align: center;
+      margin: 16px 60px;
+      position: relative;
+      z-index: 2;
+    }
+    .verse-text {
+      font-family: 'Amiri', serif;
+      font-size: 17px;
+      color: #6a5030;
+      line-height: 2;
+      font-style: italic;
+    }
+    .verse-source {
+      font-size: 12px;
+      color: var(--gold);
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+
+    /* ===== QR SECTION ===== */
+    .qr-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0 18px;
+      position: relative;
+      z-index: 2;
+    }
+    .qr-label {
+      font-size: 13px;
+      color: #7a6040;
+      margin-bottom: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .qr-frame {
+      background: white;
+      border: 2px solid var(--gold);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 4px 20px rgba(200,150,12,0.25);
+      position: relative;
+    }
+    .qr-frame::before, .qr-frame::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+    .qr-frame::before {
+      top: -3px; left: -3px;
+      border-width: 3px 0 0 3px;
+      border-radius: 4px 0 0 0;
+    }
+    .qr-frame::after {
+      bottom: -3px; right: -3px;
+      border-width: 0 3px 3px 0;
+      border-radius: 0 0 4px 0;
+    }
+    #qr-code canvas, #qr-code img { border-radius: 6px; display: block; }
+    .qr-hint {
+      font-size: 11px;
+      color: #9a7a50;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer-msg {
+      text-align: center;
+      padding: 10px 60px 20px;
+      font-family: 'Amiri', serif;
+      font-size: 18px;
+      color: var(--gold-dark);
+      font-weight: 700;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== FLOATING PARTICLES ===== */
+    .particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,150,12,0.35), transparent);
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(0) rotate(0deg);   opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.8; }
+      100% { transform: translateY(-110%) rotate(360deg); opacity: 0; }
+    }
+
+    /* ===== INTERACTIVE ROSE PETALS ===== */
+    .petal {
+      position: absolute;
+      font-size: 14px;
+      animation: petal-fall linear infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @keyframes petal-fall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.5; }
+      100% { transform: translateY(1000px) rotate(720deg); opacity: 0; }
+    }
+
+    /* ===== DOWNLOAD BTN ===== */
+    #download-btn {
+      margin-top: 30px;
+      padding: 14px 50px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold));
+      color: #1a0a00;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 30px rgba(200,150,12,0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(200,150,12,0.7);
+    }
+    #download-btn:active { transform: translateY(0); }
+
+    .btn-loading { display: none; }
+
+    /* ===== WATERMARK ===== */
+    .watermark {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: rgba(200,150,12,0.35);
+      letter-spacing: 2px;
+      z-index: 3;
+      white-space: nowrap;
+    }
+
+    /* ===== PHOTO FRAME DECORATIVE ===== */
+    .hearts-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      font-size: 18px;
+      margin: 4px 0;
+      z-index: 2;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================
+         WEDDING CARD
+============================= -->
+<div id="card">
+
+  <!-- Gold bars -->
+  <div class="bar"></div>
+  <div class="bar" style="height:4px; background: linear-gradient(90deg,#8B6914,#F0C040,#C8960C,#F0C040,#8B6914); margin-top:2px;"></div>
+
+  <!-- Corner ornaments -->
+  <div class="corner tl">
+    <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/>
+      <circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/>
+      <circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/>
+      <path d="M28 12 L32 20 L40 20 L34 25 L36 33 L28 28 L20 33 L22 25 L16 20 L24 20 Z" fill="none" stroke="#C8960C" stroke-width="0.8" opacity="0.5" transform="translate(30,30) scale(0.7)"/>
+      <path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
+    </svg>
+  </div>
+  <div class="corner tr">
+    <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/>
+      <circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/>
+      <circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/>
+      <path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
+    </svg>
+  </div>
+  <div class="corner bl">
+    <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/>
+      <circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/>
+      <circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/>
+      <path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
+    </svg>
+  </div>
+  <div class="corner br">
+    <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 5 L5 55 Q5 85 35 85 L85 85" stroke="#C8960C" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/>
+      <circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/>
+      <circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/>
+      <path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
+    </svg>
+  </div>
+
+  <!-- Floating particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- ====== HEADER ====== -->
+  <div class="header">
+    <div class="bismillah">﷽</div>
+    <div class="invite-text">يسعدنا دعوتكم لحضور حفل زفاف</div>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ====== NAMES ====== -->
+  <div class="names-section">
+    <div class="couple-row">
+      <div class="name-block">
+        <div class="role-label">العريس</div>
+        <div class="name-arabic">احمد</div>
+      </div>
+      <div class="and-symbol">&amp;</div>
+      <div class="name-block">
+        <div class="role-label">العروسة</div>
+        <div class="name-arabic">رحمه</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hearts-row">
+    <span>✦</span><span style="color:var(--gold); font-size:22px;">♥</span><span>✦</span>
+  </div>
+
+  <div class="divider" style="margin: 8px 50px;">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ====== DATE STAMP ====== -->
+  <div class="stamp-wrap">
+    <div class="stamp">
+      <div class="stamp-date">٣١</div>
+      <div class="stamp-month">مارس</div>
+      <div class="stamp-year">٢٠٢٥</div>
+    </div>
+  </div>
+
+  <!-- ====== INFO CARDS ====== -->
+  <div class="info-grid">
+    <div class="info-card">
+      <span class="info-icon">🕕</span>
+      <div class="info-label">الموعد</div>
+      <div class="info-value">٦ مساءً</div>
+      <div class="info-value" style="font-size:14px; margin-top:2px;"><small>حتى الساعة ٩ مساءً</small></div>
+    </div>
+    <div class="info-card">
+      <span class="info-icon">📅</span>
+      <div class="info-label">التاريخ</div>
+      <div class="info-value">٣١ / ٣</div>
+      <div class="info-value" style="font-size:13px; margin-top:2px;"><small>الثلاثاء</small></div>
+    </div>
+    <div class="info-card">
+      <span class="info-icon">🗺️</span>
+      <div class="info-label">المكان</div>
+      <div class="info-value" style="font-size:14px;">امسح الكود</div>
+      <div class="info-value" style="font-size:12px; margin-top:2px;"><small>لفتح الخريطة</small></div>
+    </div>
+  </div>
+
+  <!-- ====== VERSE ====== -->
+  <div class="verse-section">
+    <div class="divider" style="margin: 14px 0;">
+      <div class="divider-line"></div>
+      <div class="divider-diamond"></div>
+      <div class="divider-line"></div>
+    </div>
+    <div class="verse-text">
+      وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا<br/>
+      لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً
+    </div>
+    <div class="verse-source">— سورة الروم: ٢١ —</div>
+    <div class="divider" style="margin: 12px 0;">
+      <div class="divider-line"></div>
+      <div class="divider-diamond"></div>
+      <div class="divider-line"></div>
+    </div>
+  </div>
+
+  <!-- ====== QR CODE ====== -->
+  <div class="qr-section">
+    <div class="qr-label">📍 الموقع على الخريطة</div>
+    <div class="qr-frame">
+      <div id="qr-code"></div>
+    </div>
+    <div class="qr-hint">امسح الكود لفتح الموقع على Google Maps</div>
+  </div>
+
+  <!-- ====== FOOTER ====== -->
+  <div class="footer-msg">
+    ألف مبروك .. ودوام السعادة 💛
+  </div>
+
+  <!-- Gold bars bottom -->
+  <div class="bar" style="height:4px; background: linear-gradient(90deg,#8B6914,#F0C040,#C8960C,#F0C040,#8B6914); margin-bottom:2px;"></div>
+  <div class="bar"></div>
+
+  <div class="watermark">احمد &amp; رحمه — ٣١/٣</div>
+</div>
+
+<!-- ====== DOWNLOAD BUTTON ====== -->
+<button id="download-btn" onclick="downloadCard()">
+  <span class="btn-text">⬇️ تحميل الكارت صورة</span>
+  <span class="btn-loading" id="btn-loading">جاري التحميل...</span>
+</button>
+
+<script>
+  // ============ QR CODE (Google Maps Link) ============
+  const LOCATION_URL = "https://www.google.com/maps?q=30.3856545,30.9869"; // قرية تاج الملوك
+
+  new QRCode(document.getElementById("qr-code"), {
+    text: LOCATION_URL,
+    width: 140,
+    height: 140,
+    colorDark: "#2C1A00",
+    colorLight: "#FFFFFF",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+
+  // ============ PARTICLES ============
+  const particlesEl = document.getElementById('particles');
+  const emojis = ['✦', '✧', '◆', '❋', '✿', '❀'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.classList.add('particle');
+    const size = Math.random() * 16 + 6;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random() * 100}%;
+      bottom:-20px;
+      animation-duration:${Math.random() * 10 + 8}s;
+      animation-delay:${Math.random() * 8}s;
+      opacity:0;
+    `;
+    particlesEl.appendChild(p);
+  }
+
+  // Petal emojis
+  const petalEmojis = ['🌸','✨','⭐','💛','🌟','✦'];
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement('div');
+    p.classList.add('petal');
+    p.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+    p.style.cssText = `
+      left:${Math.random() * 100}%;
+      top:-30px;
+      animation-duration:${Math.random() * 12 + 10}s;
+      animation-delay:${Math.random() * 10}s;
+      font-size:${Math.random() * 10 + 10}px;
+      opacity:0;
+    `;
+    particlesEl.appendChild(p);
+  }
+
+  // ============ DOWNLOAD AS IMAGE ============
+  async function downloadCard() {
+    const btn = document.getElementById('download-btn');
+    const btnText = btn.querySelector('.btn-text');
+    const btnLoading = document.getElementById('btn-loading');
+
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'inline';
+    btn.disabled = true;
+
+    try {
+      const card = document.getElementById('card');
+      const canvas = await html2canvas(card, {
+        scale: 3,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#FFFDF5',
+        logging: false,
+        width: card.offsetWidth,
+        height: card.offsetHeight,
+      });
+
+      const link = document.createElement('a');
+      link.download = 'كارت-زفاف-احمد-ورحمه.png';
+      link.href = canvas.toDataURL('image/png', 1.0);
+      link.click();
+    } catch (err) {
+      alert('حدث خطأ أثناء التحميل، حاول مرة أخرى');
+      console.error(err);
+    } finally {
+      btnText.style.display = 'inline';
+      btnLoading.style.display = 'none';
+      btn.disabled = false;
+    }
+  }
+</script>
+
+</body>
+</html>
