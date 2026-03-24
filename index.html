@@ -16,84 +16,101 @@
       --cream: #FFFDF5;
       --white: #FFFFFF;
       --dark: #2C1A00;
+
+      /* Fluid font sizes */
+      --fs-xl:  clamp(36px, 8vw, 60px);
+      --fs-lg:  clamp(18px, 4vw, 26px);
+      --fs-md:  clamp(14px, 3vw, 20px);
+      --fs-sm:  clamp(11px, 2.5vw, 15px);
+      --fs-xs:  clamp(10px, 2vw, 13px);
+
+      /* Fluid spacing */
+      --pad-h:  clamp(20px, 6vw, 60px);
+      --pad-v:  clamp(14px, 3vw, 30px);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #1a0a00 0%, #2d1500 40%, #1a0a00 100%);
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(200,150,12,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(200,150,12,0.06) 0%, transparent 60%),
+        linear-gradient(135deg, #0e0500 0%, #1f0d00 40%, #0e0500 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 30px 20px;
+      padding: clamp(16px, 4vw, 40px) clamp(12px, 3vw, 24px);
       font-family: 'Tajawal', sans-serif;
     }
 
-    /* ===== CANVAS / CARD ===== */
+    /* ===== CARD ===== */
     #card {
       position: relative;
-      width: 700px;
-      min-height: 950px;
+      width: min(700px, 100%);
       background: var(--cream);
-      border-radius: 4px;
+      border-radius: clamp(4px, 1vw, 8px);
       overflow: hidden;
       box-shadow:
         0 0 0 2px var(--gold),
-        0 0 0 8px rgba(200,150,12,0.15),
-        0 30px 80px rgba(0,0,0,0.7);
+        0 0 0 clamp(4px, 1.2vw, 10px) rgba(200,150,12,0.12),
+        0 clamp(10px, 4vw, 40px) clamp(30px, 8vw, 90px) rgba(0,0,0,0.75);
     }
 
-    /* ===== GOLD BARS TOP/BOTTOM ===== */
+    /* ===== GOLD BARS ===== */
     .bar {
-      height: 14px;
+      height: clamp(8px, 1.5vw, 14px);
       background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-light), var(--gold-dark));
+    }
+    .bar-thin {
+      height: clamp(2px, 0.5vw, 4px);
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-light), var(--gold-dark));
+      margin-top: 2px;
     }
 
     /* ===== CORNER ORNAMENTS ===== */
     .corner {
       position: absolute;
-      width: 90px;
-      height: 90px;
+      width: clamp(55px, 12vw, 90px);
+      height: clamp(55px, 12vw, 90px);
       pointer-events: none;
       z-index: 5;
     }
     .corner svg { width: 100%; height: 100%; }
-    .corner.tl { top: 14px; left: 0; }
-    .corner.tr { top: 14px; right: 0; transform: scaleX(-1); }
-    .corner.bl { bottom: 14px; left: 0; transform: scaleY(-1); }
-    .corner.br { bottom: 14px; right: 0; transform: scale(-1); }
+    .corner.tl { top: clamp(8px, 1.5vw, 14px); left: 0; }
+    .corner.tr { top: clamp(8px, 1.5vw, 14px); right: 0; transform: scaleX(-1); }
+    .corner.bl { bottom: clamp(8px, 1.5vw, 14px); left: 0; transform: scaleY(-1); }
+    .corner.br { bottom: clamp(8px, 1.5vw, 14px); right: 0; transform: scale(-1); }
 
     /* ===== HEADER ===== */
     .header {
       text-align: center;
-      padding: 38px 60px 0;
+      padding: clamp(22px, 5vw, 40px) var(--pad-h) 0;
       position: relative;
       z-index: 2;
     }
     .bismillah {
       font-family: 'Amiri', serif;
-      font-size: 22px;
+      font-size: var(--fs-lg);
       color: var(--gold);
-      letter-spacing: 3px;
-      margin-bottom: 14px;
-      text-shadow: 0 1px 2px rgba(200,150,12,0.3);
+      letter-spacing: 2px;
+      margin-bottom: clamp(8px, 2vw, 14px);
+      text-shadow: 0 1px 3px rgba(200,150,12,0.35);
     }
     .invite-text {
-      font-size: 15px;
+      font-size: var(--fs-sm);
       color: #7a6040;
       font-weight: 500;
       letter-spacing: 1px;
-      margin-bottom: 6px;
     }
 
-    /* ===== GOLD DIVIDER ===== */
+    /* ===== DIVIDER ===== */
     .divider {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin: 14px 50px;
+      gap: clamp(6px, 2vw, 12px);
+      margin: clamp(8px, 2vw, 14px) clamp(20px, 7vw, 50px);
     }
     .divider-line {
       flex: 1;
@@ -101,17 +118,17 @@
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
     }
     .divider-diamond {
-      width: 10px;
-      height: 10px;
+      width: clamp(6px, 1.5vw, 10px);
+      height: clamp(6px, 1.5vw, 10px);
       background: var(--gold);
       transform: rotate(45deg);
       flex-shrink: 0;
     }
 
-    /* ===== NAMES SECTION ===== */
+    /* ===== NAMES ===== */
     .names-section {
       text-align: center;
-      padding: 10px 40px;
+      padding: clamp(6px, 2vw, 12px) var(--pad-h);
       position: relative;
       z-index: 2;
     }
@@ -119,92 +136,96 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 0;
-      flex-wrap: wrap;
     }
-    .name-block {
-      text-align: center;
-      flex: 1;
-      min-width: 180px;
-    }
+    .name-block { text-align: center; flex: 1; }
     .role-label {
-      font-size: 13px;
+      font-size: var(--fs-xs);
       color: #9a7a40;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: 1px;
-      margin-bottom: 4px;
+      margin-bottom: clamp(2px, 0.8vw, 6px);
       text-transform: uppercase;
     }
     .name-arabic {
       font-family: 'Amiri', serif;
-      font-size: 58px;
+      font-size: var(--fs-xl);
       font-weight: 700;
       background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold), var(--gold-dark));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       line-height: 1.1;
-      text-shadow: none;
-      filter: drop-shadow(0 2px 4px rgba(200,150,12,0.4));
+      filter: drop-shadow(0 1px 3px rgba(200,150,12,0.4));
     }
     .and-symbol {
       font-family: 'Amiri', serif;
-      font-size: 50px;
+      font-size: clamp(28px, 6vw, 50px);
       color: var(--gold);
-      opacity: 0.7;
-      padding: 0 10px;
-      line-height: 1;
-      margin-top: 16px;
+      opacity: 0.65;
+      padding: 0 clamp(4px, 1.5vw, 12px);
+      margin-top: clamp(8px, 2vw, 18px);
       flex-shrink: 0;
+      line-height: 1;
     }
 
-    /* ===== GOLDEN STAMP CIRCLE ===== */
+    /* ===== SMALL EMOJI ROW ===== */
+    .hearts-row {
+      display: flex;
+      justify-content: center;
+      gap: clamp(8px, 2vw, 14px);
+      font-size: clamp(12px, 3vw, 18px);
+      margin: clamp(2px, 1vw, 6px) 0;
+      z-index: 2;
+      position: relative;
+    }
+
+    /* ===== DATE STAMP ===== */
     .stamp-wrap {
       display: flex;
       justify-content: center;
-      margin: 6px 0 10px;
+      margin: clamp(6px, 1.5vw, 12px) 0 clamp(8px, 2vw, 14px);
       position: relative;
       z-index: 2;
     }
     .stamp {
-      width: 130px;
-      height: 130px;
+      width: clamp(90px, 18vw, 130px);
+      height: clamp(90px, 18vw, 130px);
       border-radius: 50%;
-      border: 3px solid var(--gold);
+      border: clamp(2px, 0.4vw, 3px) solid var(--gold);
       background: linear-gradient(135deg, #fff9e6, #fff5cc, #fff9e6);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       box-shadow:
-        0 0 0 6px rgba(200,150,12,0.12),
-        0 0 0 10px rgba(200,150,12,0.06),
-        0 8px 30px rgba(200,150,12,0.3);
+        0 0 0 clamp(3px, 1vw, 6px) rgba(200,150,12,0.13),
+        0 0 0 clamp(5px, 1.5vw, 10px) rgba(200,150,12,0.06),
+        0 clamp(4px, 1.5vw, 8px) clamp(14px, 4vw, 30px) rgba(200,150,12,0.3);
       position: relative;
     }
     .stamp::before {
       content: '';
       position: absolute;
-      inset: 6px;
+      inset: clamp(4px, 1vw, 7px);
       border-radius: 50%;
       border: 1px dashed var(--gold);
-      opacity: 0.6;
+      opacity: 0.55;
     }
     .stamp-date {
       font-family: 'Amiri', serif;
-      font-size: 26px;
+      font-size: clamp(18px, 4vw, 28px);
       font-weight: 700;
       color: var(--gold-dark);
       line-height: 1;
     }
     .stamp-month {
-      font-size: 13px;
+      font-size: clamp(9px, 2vw, 13px);
       color: var(--gold);
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
     .stamp-year {
-      font-size: 11px;
+      font-size: clamp(8px, 1.8vw, 11px);
       color: #9a7a50;
       font-weight: 500;
     }
@@ -212,8 +233,8 @@
     /* ===== INFO CARDS ===== */
     .info-grid {
       display: flex;
-      gap: 18px;
-      margin: 10px 50px 0;
+      gap: clamp(8px, 2vw, 18px);
+      margin: clamp(6px, 2vw, 12px) clamp(16px, 5vw, 50px) 0;
       position: relative;
       z-index: 2;
     }
@@ -221,53 +242,53 @@
       flex: 1;
       background: linear-gradient(135deg, #fff9e6, #fffbf0);
       border: 1px solid rgba(200,150,12,0.3);
-      border-radius: 12px;
-      padding: 18px 14px;
+      border-radius: clamp(8px, 2vw, 14px);
+      padding: clamp(10px, 2.5vw, 20px) clamp(6px, 1.5vw, 14px);
       text-align: center;
-      box-shadow: 0 4px 20px rgba(200,150,12,0.1);
+      box-shadow: 0 3px 16px rgba(200,150,12,0.1);
     }
     .info-icon {
-      font-size: 26px;
-      margin-bottom: 6px;
+      font-size: clamp(16px, 4vw, 26px);
+      margin-bottom: clamp(3px, 0.8vw, 7px);
       display: block;
     }
     .info-label {
-      font-size: 12px;
+      font-size: clamp(9px, 2vw, 12px);
       color: #9a7a40;
       font-weight: 600;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
-      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: clamp(2px, 0.5vw, 4px);
     }
     .info-value {
       font-family: 'Amiri', serif;
-      font-size: 20px;
+      font-size: clamp(14px, 3.5vw, 20px);
       color: var(--gold-dark);
       font-weight: 700;
+      line-height: 1.3;
     }
     .info-value small {
-      font-size: 13px;
+      font-size: clamp(9px, 2vw, 13px);
       color: #7a6040;
     }
 
-    /* ===== POEM / VERSE ===== */
+    /* ===== VERSE ===== */
     .verse-section {
       text-align: center;
-      margin: 16px 60px;
+      margin: clamp(10px, 2.5vw, 18px) var(--pad-h);
       position: relative;
       z-index: 2;
     }
     .verse-text {
       font-family: 'Amiri', serif;
-      font-size: 17px;
+      font-size: clamp(13px, 3.2vw, 18px);
       color: #6a5030;
       line-height: 2;
       font-style: italic;
     }
     .verse-source {
-      font-size: 12px;
+      font-size: var(--fs-xs);
       color: var(--gold);
-      margin-top: 4px;
+      margin-top: clamp(2px, 0.5vw, 6px);
       letter-spacing: 1px;
     }
 
@@ -276,30 +297,30 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 10px 0 18px;
+      margin: clamp(8px, 2vw, 14px) 0 clamp(12px, 3vw, 20px);
       position: relative;
       z-index: 2;
     }
     .qr-label {
-      font-size: 13px;
+      font-size: var(--fs-xs);
       color: #7a6040;
-      margin-bottom: 10px;
+      margin-bottom: clamp(6px, 1.5vw, 12px);
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
     .qr-frame {
       background: white;
-      border: 2px solid var(--gold);
-      border-radius: 14px;
-      padding: 12px;
-      box-shadow: 0 4px 20px rgba(200,150,12,0.25);
+      border: clamp(1px, 0.3vw, 2px) solid var(--gold);
+      border-radius: clamp(8px, 2vw, 14px);
+      padding: clamp(7px, 1.5vw, 13px);
+      box-shadow: 0 3px 16px rgba(200,150,12,0.22);
       position: relative;
     }
     .qr-frame::before, .qr-frame::after {
       content: '';
       position: absolute;
-      width: 18px;
-      height: 18px;
+      width: clamp(10px, 2.5vw, 18px);
+      height: clamp(10px, 2.5vw, 18px);
       border-color: var(--gold);
       border-style: solid;
     }
@@ -313,27 +334,27 @@
       border-width: 0 3px 3px 0;
       border-radius: 0 0 4px 0;
     }
-    #qr-code canvas, #qr-code img { border-radius: 6px; display: block; }
+    #qr-code canvas, #qr-code img { border-radius: 5px; display: block; }
     .qr-hint {
-      font-size: 11px;
+      font-size: clamp(9px, 2vw, 11px);
       color: #9a7a50;
-      margin-top: 8px;
+      margin-top: clamp(4px, 1vw, 8px);
       text-align: center;
     }
 
     /* ===== FOOTER ===== */
     .footer-msg {
       text-align: center;
-      padding: 10px 60px 20px;
+      padding: clamp(6px, 1.5vw, 12px) var(--pad-h) clamp(14px, 3vw, 22px);
       font-family: 'Amiri', serif;
-      font-size: 18px;
+      font-size: clamp(14px, 3.5vw, 19px);
       color: var(--gold-dark);
       font-weight: 700;
       position: relative;
       z-index: 2;
     }
 
-    /* ===== FLOATING PARTICLES ===== */
+    /* ===== PARTICLES ===== */
     .particles {
       position: absolute;
       inset: 0;
@@ -344,94 +365,107 @@
     .particle {
       position: absolute;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,150,12,0.35), transparent);
+      background: radial-gradient(circle, rgba(200,150,12,0.3), transparent);
       animation: float linear infinite;
     }
-
-    @keyframes float {
-      0%   { transform: translateY(0) rotate(0deg);   opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 0.8; }
-      100% { transform: translateY(-110%) rotate(360deg); opacity: 0; }
-    }
-
-    /* ===== INTERACTIVE ROSE PETALS ===== */
     .petal {
       position: absolute;
-      font-size: 14px;
       animation: petal-fall linear infinite;
       pointer-events: none;
       z-index: 1;
     }
+    @keyframes float {
+      0%   { transform: translateY(0) rotate(0deg);   opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.7; }
+      100% { transform: translateY(-110%) rotate(360deg); opacity: 0; }
+    }
     @keyframes petal-fall {
-      0%   { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+      0%   { transform: translateY(-20px) rotate(0deg);   opacity: 0; }
       10%  { opacity: 0.7; }
       90%  { opacity: 0.5; }
       100% { transform: translateY(1000px) rotate(720deg); opacity: 0; }
     }
 
+    /* ===== SHIMMER on names ===== */
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    .name-arabic {
+      background-size: 200% auto;
+      animation: shimmer 4s linear infinite;
+    }
+
+    /* ===== PULSE on stamp ===== */
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(200,150,12,0.35), 0 0 0 6px rgba(200,150,12,0.1); }
+      100% { box-shadow: 0 0 0 12px rgba(200,150,12,0),  0 0 0 6px rgba(200,150,12,0); }
+    }
+    .stamp { animation: pulse-ring 2.5s ease-out infinite; }
+
+    /* ===== WATERMARK ===== */
+    .watermark {
+      position: absolute;
+      bottom: clamp(20px, 4vw, 32px);
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: clamp(8px, 1.8vw, 10px);
+      color: rgba(200,150,12,0.3);
+      letter-spacing: 2px;
+      z-index: 3;
+      white-space: nowrap;
+    }
+
     /* ===== DOWNLOAD BTN ===== */
     #download-btn {
-      margin-top: 30px;
-      padding: 14px 50px;
+      margin-top: clamp(18px, 4vw, 30px);
+      padding: clamp(10px, 2.5vw, 15px) clamp(28px, 7vw, 52px);
       font-family: 'Tajawal', sans-serif;
-      font-size: 17px;
+      font-size: clamp(14px, 3.5vw, 17px);
       font-weight: 700;
       background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold));
       color: #1a0a00;
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 6px 30px rgba(200,150,12,0.5);
+      box-shadow: 0 6px 28px rgba(200,150,12,0.5);
       transition: transform 0.2s, box-shadow 0.2s;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     #download-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 40px rgba(200,150,12,0.7);
     }
     #download-btn:active { transform: translateY(0); }
-
+    #download-btn:disabled { opacity: 0.7; cursor: not-allowed; }
     .btn-loading { display: none; }
 
-    /* ===== WATERMARK ===== */
-    .watermark {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      color: rgba(200,150,12,0.35);
-      letter-spacing: 2px;
-      z-index: 3;
-      white-space: nowrap;
+    /* ===== RESPONSIVE TWEAKS ===== */
+    @media (max-width: 420px) {
+      .couple-row { gap: 0; }
+      .info-grid { gap: 6px; margin-inline: 10px; }
+      .verse-text { line-height: 1.8; }
     }
 
-    /* ===== PHOTO FRAME DECORATIVE ===== */
-    .hearts-row {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      font-size: 18px;
-      margin: 4px 0;
-      z-index: 2;
-      position: relative;
+    /* Smooth fade-in on load */
+    #card { animation: fadeUp 0.8s ease both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-<!-- ============================
-         WEDDING CARD
-============================= -->
 <div id="card">
 
-  <!-- Gold bars -->
+  <!-- Gold bars top -->
   <div class="bar"></div>
-  <div class="bar" style="height:4px; background: linear-gradient(90deg,#8B6914,#F0C040,#C8960C,#F0C040,#8B6914); margin-top:2px;"></div>
+  <div class="bar-thin"></div>
 
   <!-- Corner ornaments -->
   <div class="corner tl">
@@ -440,8 +474,8 @@
       <path d="M12 5 L12 48 Q12 78 42 78 L85 78" stroke="#F0C040" stroke-width="0.8" fill="none" opacity="0.4"/>
       <circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/>
       <circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/>
-      <path d="M28 12 L32 20 L40 20 L34 25 L36 33 L28 28 L20 33 L22 25 L16 20 L24 20 Z" fill="none" stroke="#C8960C" stroke-width="0.8" opacity="0.5" transform="translate(30,30) scale(0.7)"/>
       <path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
+      <path d="M30 5 Q25 15 35 20 Q25 25 30 35" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
     </svg>
   </div>
   <div class="corner tr">
@@ -451,6 +485,7 @@
       <circle cx="20" cy="20" r="5" fill="none" stroke="#C8960C" stroke-width="1.2" opacity="0.8"/>
       <circle cx="20" cy="20" r="2" fill="#C8960C" opacity="0.8"/>
       <path d="M5 30 Q15 25 20 35 Q25 25 35 30" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
+      <path d="M30 5 Q25 15 35 20 Q25 25 30 35" stroke="#C8960C" stroke-width="0.8" fill="none" opacity="0.4"/>
     </svg>
   </div>
   <div class="corner bl">
@@ -472,10 +507,10 @@
     </svg>
   </div>
 
-  <!-- Floating particles -->
+  <!-- Particles container -->
   <div class="particles" id="particles"></div>
 
-  <!-- ====== HEADER ====== -->
+  <!-- HEADER -->
   <div class="header">
     <div class="bismillah">﷽</div>
     <div class="invite-text">يسعدنا دعوتكم لحضور حفل زفاف</div>
@@ -484,10 +519,12 @@
   <div class="divider">
     <div class="divider-line"></div>
     <div class="divider-diamond"></div>
+    <div class="divider-diamond" style="opacity:.5; margin-inline: -6px;"></div>
+    <div class="divider-diamond"></div>
     <div class="divider-line"></div>
   </div>
 
-  <!-- ====== NAMES ====== -->
+  <!-- NAMES -->
   <div class="names-section">
     <div class="couple-row">
       <div class="name-block">
@@ -503,16 +540,18 @@
   </div>
 
   <div class="hearts-row">
-    <span>✦</span><span style="color:var(--gold); font-size:22px;">♥</span><span>✦</span>
+    <span style="color:var(--gold); opacity:.5;">✦</span>
+    <span style="color:var(--gold); font-size:1.4em;">♥</span>
+    <span style="color:var(--gold); opacity:.5;">✦</span>
   </div>
 
-  <div class="divider" style="margin: 8px 50px;">
+  <div class="divider">
     <div class="divider-line"></div>
     <div class="divider-diamond"></div>
     <div class="divider-line"></div>
   </div>
 
-  <!-- ====== DATE STAMP ====== -->
+  <!-- DATE STAMP -->
   <div class="stamp-wrap">
     <div class="stamp">
       <div class="stamp-date">٣١</div>
@@ -521,31 +560,31 @@
     </div>
   </div>
 
-  <!-- ====== INFO CARDS ====== -->
+  <!-- INFO CARDS -->
   <div class="info-grid">
     <div class="info-card">
       <span class="info-icon">🕕</span>
       <div class="info-label">الموعد</div>
       <div class="info-value">٦ مساءً</div>
-      <div class="info-value" style="font-size:14px; margin-top:2px;"><small>حتى الساعة ٩ مساءً</small></div>
+      <div class="info-value"><small>حتى ٩ مساءً</small></div>
     </div>
     <div class="info-card">
       <span class="info-icon">📅</span>
       <div class="info-label">التاريخ</div>
       <div class="info-value">٣١ / ٣</div>
-      <div class="info-value" style="font-size:13px; margin-top:2px;"><small>الثلاثاء</small></div>
+      <div class="info-value"><small>الثلاثاء</small></div>
     </div>
     <div class="info-card">
       <span class="info-icon">🗺️</span>
       <div class="info-label">المكان</div>
-      <div class="info-value" style="font-size:14px;">امسح الكود</div>
-      <div class="info-value" style="font-size:12px; margin-top:2px;"><small>لفتح الخريطة</small></div>
+      <div class="info-value" style="font-size: clamp(11px,2.5vw,14px);">قرية تاج الملوك</div>
+      <div class="info-value"><small>امسح الكود ↓</small></div>
     </div>
   </div>
 
-  <!-- ====== VERSE ====== -->
+  <!-- VERSE -->
   <div class="verse-section">
-    <div class="divider" style="margin: 14px 0;">
+    <div class="divider" style="margin: clamp(10px,2.5vw,16px) 0;">
       <div class="divider-line"></div>
       <div class="divider-diamond"></div>
       <div class="divider-line"></div>
@@ -555,95 +594,97 @@
       لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً
     </div>
     <div class="verse-source">— سورة الروم: ٢١ —</div>
-    <div class="divider" style="margin: 12px 0;">
+    <div class="divider" style="margin: clamp(10px,2.5vw,14px) 0;">
       <div class="divider-line"></div>
       <div class="divider-diamond"></div>
       <div class="divider-line"></div>
     </div>
   </div>
 
-  <!-- ====== QR CODE ====== -->
+  <!-- QR CODE -->
   <div class="qr-section">
-    <div class="qr-label">📍 الموقع على الخريطة</div>
+    <div class="qr-label">📍 الموقع على الخريطة — قرية تاج الملوك</div>
     <div class="qr-frame">
       <div id="qr-code"></div>
     </div>
-    <div class="qr-hint">امسح الكود لفتح الموقع على Google Maps</div>
+    <div class="qr-hint">امسح الكود بالكاميرا لفتح الموقع على Google Maps</div>
   </div>
 
-  <!-- ====== FOOTER ====== -->
-  <div class="footer-msg">
-    ألف مبروك .. ودوام السعادة 💛
-  </div>
+  <!-- FOOTER -->
+  <div class="footer-msg">ألف مبروك .. ودوام المحبة والسعادة 💛</div>
 
   <!-- Gold bars bottom -->
-  <div class="bar" style="height:4px; background: linear-gradient(90deg,#8B6914,#F0C040,#C8960C,#F0C040,#8B6914); margin-bottom:2px;"></div>
+  <div class="bar-thin" style="margin-bottom:2px;"></div>
   <div class="bar"></div>
 
-  <div class="watermark">احمد &amp; رحمه — ٣١/٣</div>
+  <div class="watermark">احمد &amp; رحمه — ٣١/٣/٢٠٢٥</div>
 </div>
 
-<!-- ====== DOWNLOAD BUTTON ====== -->
+<!-- DOWNLOAD BUTTON -->
 <button id="download-btn" onclick="downloadCard()">
   <span class="btn-text">⬇️ تحميل الكارت صورة</span>
-  <span class="btn-loading" id="btn-loading">جاري التحميل...</span>
+  <span class="btn-loading" id="btn-loading">⏳ جاري التحميل...</span>
 </button>
 
 <script>
-  // ============ QR CODE (Google Maps Link) ============
-  const LOCATION_URL = "https://www.google.com/maps?q=30.3856545,30.9869"; // قرية تاج الملوك
+  /* ====== QR CODE ====== */
+  const LOCATION_URL = "https://www.google.com/maps?q=30.3856545,30.9869";
+
+  // Responsive QR size
+  const qrSize = Math.min(140, Math.round(window.innerWidth * 0.32));
 
   new QRCode(document.getElementById("qr-code"), {
     text: LOCATION_URL,
-    width: 140,
-    height: 140,
+    width: qrSize,
+    height: qrSize,
     colorDark: "#2C1A00",
     colorLight: "#FFFFFF",
     correctLevel: QRCode.CorrectLevel.H
   });
 
-  // ============ PARTICLES ============
+  /* ====== PARTICLES ====== */
   const particlesEl = document.getElementById('particles');
-  const emojis = ['✦', '✧', '◆', '❋', '✿', '❀'];
-  for (let i = 0; i < 18; i++) {
+
+  // Glowing orbs
+  for (let i = 0; i < 16; i++) {
     const p = document.createElement('div');
     p.classList.add('particle');
-    const size = Math.random() * 16 + 6;
+    const size = Math.random() * 14 + 5;
     p.style.cssText = `
-      width:${size}px; height:${size}px;
-      left:${Math.random() * 100}%;
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
       bottom:-20px;
-      animation-duration:${Math.random() * 10 + 8}s;
-      animation-delay:${Math.random() * 8}s;
+      animation-duration:${Math.random()*10+8}s;
+      animation-delay:${Math.random()*8}s;
       opacity:0;
     `;
     particlesEl.appendChild(p);
   }
 
-  // Petal emojis
-  const petalEmojis = ['🌸','✨','⭐','💛','🌟','✦'];
-  for (let i = 0; i < 12; i++) {
+  // Falling petals
+  const petalEmojis = ['🌸','✨','⭐','💛','🌟','✦','❋'];
+  for (let i = 0; i < 10; i++) {
     const p = document.createElement('div');
     p.classList.add('petal');
     p.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
     p.style.cssText = `
-      left:${Math.random() * 100}%;
+      left:${Math.random()*100}%;
       top:-30px;
-      animation-duration:${Math.random() * 12 + 10}s;
-      animation-delay:${Math.random() * 10}s;
-      font-size:${Math.random() * 10 + 10}px;
+      animation-duration:${Math.random()*12+10}s;
+      animation-delay:${Math.random()*10}s;
+      font-size:${Math.random()*8+9}px;
       opacity:0;
     `;
     particlesEl.appendChild(p);
   }
 
-  // ============ DOWNLOAD AS IMAGE ============
+  /* ====== DOWNLOAD AS IMAGE ====== */
   async function downloadCard() {
-    const btn = document.getElementById('download-btn');
-    const btnText = btn.querySelector('.btn-text');
+    const btn       = document.getElementById('download-btn');
+    const btnText   = btn.querySelector('.btn-text');
     const btnLoading = document.getElementById('btn-loading');
 
-    btnText.style.display = 'none';
+    btnText.style.display   = 'none';
     btnLoading.style.display = 'inline';
     btn.disabled = true;
 
@@ -655,7 +696,7 @@
         allowTaint: true,
         backgroundColor: '#FFFDF5',
         logging: false,
-        width: card.offsetWidth,
+        width:  card.offsetWidth,
         height: card.offsetHeight,
       });
 
@@ -667,7 +708,7 @@
       alert('حدث خطأ أثناء التحميل، حاول مرة أخرى');
       console.error(err);
     } finally {
-      btnText.style.display = 'inline';
+      btnText.style.display   = 'inline';
       btnLoading.style.display = 'none';
       btn.disabled = false;
     }
